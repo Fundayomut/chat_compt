@@ -1,0 +1,78 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #ulid{
+            border: solid 1px gray;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <ul id="ulid"></ul>
+    </div>
+    <div>
+        <input id="bInput" type="text" placeholder="Type your message here">
+        <button id="fragebutton">Send</button>
+    </div>
+    <script>
+        let array=[
+        { question: 'hallo', answer: 'hallo! Wie kann ich Ihnen helfen?' },
+        { question: 'hey', answer: 'hey ! Wie kann ich Ihnen helfen?' },
+        { question: 'hello', answer: 'hello! Wie kann ich Ihnen helfen?' },
+        { question: 'hi', answer: 'hi! Wie kann ich Ihnen helfen?' },
+        { question: 'wie geht es dir?', answer: 'mir geht es gut, danke für die Nachfrage.' },
+        { question: 'Was ist dein Name?', answer: 'ich bin ein Chatbot. mein Name ist nicht wichtig.' },
+        { question: 'wie ist das Wetter heute?', answer: 'das wetter ist sonnig und warm.' },
+        ];
+
+        let benutzerImput=document.getElementById("bInput");
+        let ulElement=document.getElementById("ulid");
+        let fragebutton=document.getElementById("fragebutton");
+
+        function addTextToList(paramText,textColor){
+            let neueLi=document.createElement("li");
+            neueLi.innerText=paramText;
+            ulElement.appendChild(neueLi);
+            console.log(neueLi);
+            
+
+            if(textColor==="user"){
+                neueLi.style.color="blue";
+                neueLi.style.textAlign="right";
+            }
+            else{
+                neueLi.style.color="green";
+            }
+        };
+        
+        function antwortCheck(){
+
+            addTextToList(benutzerImput.value,"user");
+
+            let check=false;
+            for(let x=0; x<array.length; x++){
+                if(benutzerImput.value===array[x].question){
+                    
+                    setTimeout(addTextToList, 3000,array[x].answer,"comp");
+                    //addTextToList(array[x].answer,"comp");
+                    check=true;
+                    break;
+                }
+            }
+            if(check===false){
+                //addTextToList("sorry ich kann nicht helfen")
+                setTimeout(addTextToList,3000,"sorry ich kann nicht helfen");
+            }
+            benutzerImput.value="";
+        };
+        fragebutton.addEventListener("click",antwortCheck);
+        
+
+        
+       
+    </script>
+</body>
+</html>

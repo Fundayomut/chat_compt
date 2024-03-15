@@ -1,0 +1,162 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .ulclass {
+        border: solid 1px gray;
+        list-style-type: none;
+        padding: 20px;
+        font-weight: bolder;
+      }
+      #frageinput{
+        width: 80%;
+        height: 25px;
+        margin-left: 10px;
+        border-radius: 20px;
+        border: orange solid 1px;
+        padding-left: 5px;
+      }
+      #fragebutton{
+        width: 15%;
+        height: 25px;
+        background-color: orange;
+        border-radius: 20px;
+        border: orange solid 1px;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <h2>conversation with robot</h2>
+      <div>
+        <ul id="ulid" class="ulclass">
+          <li></li>
+        </ul>
+      </div>
+      <div>
+        <input
+          id="frageinput"
+          type="text"
+          placeholder="Type your message here"
+        />
+        <button id="fragebutton">Send</button>
+      </div>
+    </div>
+    <script>
+      /*
+        1-Wenn ich Daten in das Eingabefeld von Frage schreibe und den Frage-Button drücke, wird ein Li zur Chat-Eingabe hinzufügen.
+           a.html input  / button  element gestellt
+           b.verbindung javascript mit html 
+           c.neue element stellen fuer text 
+           d. li----- eingabefelder wert -: value
+            
+           e.button- wenn user button drucke, a-d schritte passieren... -
+
+        2-Der Wert dieser Frage namens Frage li nimmt den Fragewert jedes Objekts der Array-Liste an.
+         a.forschleife - 
+           for-schleife laeuft bis array^s eintrage ------- array.length
+           for schleife hat eine variable let x ------ x lauft 0 bis array.length x-0, -x-1, x-2, x-3... weiter
+          was machen wir mit varaible X ---- man kann mit X unsere array´s jede eintrage schauen weil x ein nummer ist, beispiel) array[0] --- > array[x] 
+          und dann man kann array[x].question und array[x].answer zugreifen       
+    
+        3-Wenn der vom Benutzer eingegebene Wert und der Frageli-Wert gleich sind
+            a.if(li --- > value(1b) gleich (=) array[x].question)
+                *value verglich in array´s jede object in question
+
+        4-Dem ul-Element wird ein neues li-Element hinzugefügt
+            a.neue li cerate für antwort (zb: antwortLi)
+            b.anwortli hizzufügen in ullist(appenchild)
+                *Daher wird für jede hinzugefügte Frage eine Antwortzeile erstellt
+            
+        5-Antwortli erhält die answer im Array
+            a.antwortli wert (inertext) gleich(=)--- array[x].answer 
+        
+        6-  else  schrieben
+            a.schreibt : sorry ich kann nicht helfen.
+                *(1d)frageli ---- > nicht gleich antwortli --- >  
+        */
+
+      let ulList = document.getElementById("ulid");
+      let frageInput = document.getElementById("frageinput");
+      let frageButton = document.getElementById("fragebutton");
+
+      let array = [
+        { question: "hallo", answer: "hallo! Wie kann ich Ihnen helfen?" },
+        { question: "hey", answer: "hey ! Wie kann ich Ihnen helfen?" },
+        { question: "hello", answer: "hello! Wie kann ich Ihnen helfen?" },
+        { question: "hi", answer: "hi! Wie kann ich Ihnen helfen?" },
+        {
+          question: "wie geht es dir?",
+          answer: "mir geht es gut, danke für die Nachfrage.",
+        },
+        {
+          question: "Was ist dein Name?",
+          answer: "ich bin ein Chatbot. mein Name ist nicht wichtig.",
+        },
+        {
+          question: "wie ist das Wetter heute?",
+          answer: "das wetter ist sonnig und warm.",
+        },
+      ];
+
+      /*
+       addToBox fonksiyonu, kullanıcının girdisini alır ve uygun bir yanıtı ekler.
+       addToBox fonksiyonun iki parametresi var ilk parmetresi paramtext digeri paramuser
+       add to box´in tek görevi var bu görev li elemani olusturmak dahs sonra bu fonksiyonu 
+       diger fonksyonun icinde cagiriyorum ve fonksiyonun parametresinin ne oldugunu fonksiyonu cagirdigim
+       diger fonksiyon icinde belirtiyorum 
+        
+       */
+
+
+      function addToBox(paramText,paramUser) {
+        let liElement = document.createElement("li");
+        ulList.appendChild(liElement);
+        liElement.innerText = paramText;
+       
+      
+
+        if(paramUser==="user"){
+            liElement.style.color="blue";
+            liElement.style.textAlign="right";
+            //liElement.style.fontFamily="'Courier New', Courier, monospace";
+        }
+        else{
+            liElement.style.color="green";
+            liElement.style.textAlign="left";
+            //liElement.style.fontFamily="'Courier New', Courier, monospace";
+        }
+      }
+
+      function buttonClick() {
+        addToBox(frageInput.value, "user");
+        let frageGefunden = false; //"frageGefunden değişkeni, tanımlı sorular arasında kullanıcının girdisi ile eşleşme bulunup bulunmadığını kontrol etmek için kullanılır. Başlangıçta false olarak atanır, yani eşleşme bulunmadığı varsayılır."
+
+        console.log(frageInput.value);
+
+        // Tanımlı sorularla eşleşen yanıtlar aranıyor
+        for (let x = 0; x < array.length; x++) {
+          if (frageInput.value === array[x].question) {
+            // Eşleşme bulunursa, uygun yanıt ekleniyor
+            setTimeout(addToBox,3000,array[x].answer,"comp");
+            //addToBox(array[x].answer, "comp");
+            frageGefunden = true; //"frageGefunden değişkeni, kullanıcının girdisinin tanımlı sorular arasında bir eşleşme bulduğunu belirtmek için true değerine atandı."
+            break;
+          }
+        }
+        // Eşleşme bulunamazsa, standart bir yanıt ekleniyor
+        if (frageGefunden === false) {
+          // parametreyi kontrol et ve eger true degilse yeniden bir antwort li olustur.
+          //addToBox("sorry ich kann nicht helfen", "comp");
+          setTimeout(addToBox,3000,"sorry ich kann nicht helfen");
+        }
+        frageInput.value="";
+      }
+
+      frageButton.addEventListener("click", buttonClick);
+    </script>
+  </body>
+</html>
